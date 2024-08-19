@@ -1,0 +1,287 @@
+model1 <- glmer(survival ~ as.factor(sex) + as.factor(age_cat) + (1|year) + (1|site) + (1|site_year), data = blue_tit_survival, family = binomial)
+> summary(model1)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: survival ~ as.factor(sex) + as.factor(age_cat) + (1 | year) +      (1 | site) + (1 | site_year)
+   Data: blue_tit_survival
+
+     AIC      BIC   logLik deviance df.resid 
+  3512.8   3548.0  -1750.4   3500.8     2595 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.2208 -0.8479 -0.7036  1.0898  1.6654 
+
+Random effects:
+ Groups    Name        Variance Std.Dev.
+ site_year (Intercept) 0.01880  0.1371  
+ site      (Intercept) 0.07735  0.2781  
+ year      (Intercept) 0.01194  0.1093  
+Number of obs: 2601, groups:  site_year, 337; site, 42; year, 9
+
+Fixed effects:
+                    Estimate Std. Error z value Pr(>|z|)    
+(Intercept)         -0.41807    0.09095  -4.597 4.29e-06 ***
+as.factor(sex)M      0.26719    0.08106   3.296  0.00098 ***
+as.factor(age_cat)Y -0.21724    0.08473  -2.564  0.01035 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) as.()M
+as.fctr(s)M -0.461       
+as.fctr(_)Y -0.412  0.066
+> ### Fit a GLMM testing sex and age estimate (age_est_4eq5) as fixed effects whilst accounting for site, year & site_year as random effects
+> model2 <- glmer(survival ~ as.factor(sex) + age_est_4eq5 + (1|year) + (1|site) + (1|site_year), data = adults_known_age, family = binomial)
+> summary(model2)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: survival ~ as.factor(sex) + age_est_4eq5 + (1 | year) + (1 |      site) + (1 | site_year)
+   Data: adults_known_age
+
+     AIC      BIC   logLik deviance df.resid 
+  2296.5   2329.1  -1142.2   2284.5     1681 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.3912 -0.8431 -0.7211  1.0595  1.6173 
+
+Random effects:
+ Groups    Name        Variance Std.Dev.
+ site_year (Intercept) 0.089525 0.29921 
+ site      (Intercept) 0.049033 0.22143 
+ year      (Intercept) 0.007645 0.08744 
+Number of obs: 1687, groups:  site_year, 330; site, 42; year, 9
+
+Fixed effects:
+                Estimate Std. Error z value Pr(>|z|)    
+(Intercept)      -0.6488     0.1182  -5.491    4e-08 ***
+as.factor(sex)M   0.2684     0.1014   2.646  0.00815 ** 
+age_est_4eq5      0.1435     0.0525   2.733  0.00627 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) as.()M
+as.fctr(s)M -0.366       
+age_est_4q5 -0.672 -0.035
+> ### Fit a GLMM testing sex, age category, proportional nest box occupancy (prop_occ) & average fledgling success (suc_av)  as fixed effects whilst accounting for site, year & site_year as random effects
+> model3 <- glmer(survival ~ as.factor(sex) + as.factor(age_cat) + prop_occ + suc_av + (1|year) + (1|site) + (1|site_year), data = blue_tit_survival, family = binomial)
+> summary(model3)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: survival ~ as.factor(sex) + as.factor(age_cat) + prop_occ + suc_av +  
+    (1 | year) + (1 | site) + (1 | site_year)
+   Data: blue_tit_survival
+
+     AIC      BIC   logLik deviance df.resid 
+  3516.6   3563.5  -1750.3   3500.6     2593 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.1983 -0.8468 -0.7024  1.0904  1.6637 
+
+Random effects:
+ Groups    Name        Variance Std.Dev.
+ site_year (Intercept) 0.01655  0.1286  
+ site      (Intercept) 0.08417  0.2901  
+ year      (Intercept) 0.01184  0.1088  
+Number of obs: 2601, groups:  site_year, 337; site, 42; year, 9
+
+Fixed effects:
+                     Estimate Std. Error z value Pr(>|z|)    
+(Intercept)         -0.357515   0.195135  -1.832 0.066930 .  
+as.factor(sex)M      0.266902   0.081078   3.292 0.000995 ***
+as.factor(age_cat)Y -0.215850   0.084811  -2.545 0.010925 *  
+prop_occ            -0.135333   0.340510  -0.397 0.691042    
+suc_av               0.007113   0.036522   0.195 0.845591    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) as.()M a.(_)Y prp_cc
+as.fctr(s)M -0.218                     
+as.fctr(_)Y -0.156  0.066              
+prop_occ    -0.694  0.010 -0.040       
+suc_av      -0.006 -0.010  0.014 -0.612
+> ### Fit a GLMM testing sex, age category, mean nest box occupancy for a site across years (mean_occ) & mean average fledgling success for a site across years (suc_mean)  as fixed effects whilst accounting for site, year & site_year as random effects
+> #These occupancy metrics are expected to capture the quality of a given site in terms of how many birds it can support & how many fledglings it can produce
+> model4 <- glmer(survival ~ as.factor(sex) + as.factor(age_cat) + mean_occ + suc_mean + (1|year) + (1|site) + (1|site_year), data = blue_tit_survival, family = binomial)
+Warning message:
+In checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv,  :
+  Model failed to converge with max|grad| = 0.00218545 (tol = 0.002, component 1)
+> summary(model4)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: survival ~ as.factor(sex) + as.factor(age_cat) + mean_occ + suc_mean +  
+    (1 | year) + (1 | site) + (1 | site_year)
+   Data: blue_tit_survival
+
+     AIC      BIC   logLik deviance df.resid 
+  3505.3   3552.2  -1744.7   3489.3     2593 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.2218 -0.8594 -0.6931  1.0822  1.7352 
+
+Random effects:
+ Groups    Name        Variance Std.Dev.
+ site_year (Intercept) 0.01783  0.1335  
+ site      (Intercept) 0.04470  0.2114  
+ year      (Intercept) 0.01143  0.1069  
+Number of obs: 2601, groups:  site_year, 337; site, 42; year, 9
+
+Fixed effects:
+                    Estimate Std. Error z value Pr(>|z|)    
+(Intercept)         -1.08167    0.21303  -5.077 3.82e-07 ***
+as.factor(sex)M      0.26323    0.08107   3.247  0.00117 ** 
+as.factor(age_cat)Y -0.21174    0.08460  -2.503  0.01232 *  
+mean_occ             1.40048    0.62580   2.238  0.02523 *  
+suc_mean            -0.06594    0.07973  -0.827  0.40821    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) as.()M a.(_)Y men_cc
+as.fctr(s)M -0.190                     
+as.fctr(_)Y -0.216  0.067              
+mean_occ    -0.675 -0.001  0.055       
+suc_mean     0.338 -0.004 -0.045 -0.901
+optimizer (Nelder_Mead) convergence code: 0 (OK)
+Model failed to converge with max|grad| = 0.00218545 (tol = 0.002, component 1)
+
+> ### Fit a GLMM similar to model3 but using relative values for occupancy and fledgling success (relative to the mean for a site across years)
+> #These may be able to separate the true effects of population density from the effects of site quality (which may otherwise covary)
+> model5 <- glmer(survival ~ as.factor(sex) + as.factor(age_cat) + rel_occ + rel_suc + (1|year) + (1|site) + (1|site_year), data = blue_tit_survival, family = binomial)
+> summary(model5)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: survival ~ as.factor(sex) + as.factor(age_cat) + rel_occ + rel_suc +  
+    (1 | year) + (1 | site) + (1 | site_year)
+   Data: blue_tit_survival
+
+     AIC      BIC   logLik deviance df.resid 
+  3501.3   3548.2  -1742.6   3485.3     2593 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.3966 -0.8528 -0.6896  1.0888  1.9027 
+
+Random effects:
+ Groups    Name        Variance Std.Dev.
+ site_year (Intercept) 0.012313 0.11096 
+ site      (Intercept) 0.071571 0.26753 
+ year      (Intercept) 0.002733 0.05228 
+Number of obs: 2601, groups:  site_year, 337; site, 42; year, 9
+
+Fixed effects:
+                    Estimate Std. Error z value Pr(>|z|)    
+(Intercept)         -0.38958    0.08396  -4.640 3.49e-06 ***
+as.factor(sex)M      0.26219    0.08115   3.231  0.00123 ** 
+as.factor(age_cat)Y -0.21204    0.08450  -2.510  0.01209 *  
+rel_occ             -1.13840    0.36705  -3.102  0.00193 ** 
+rel_suc             -0.02953    0.04079  -0.724  0.46900    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) as.()M a.(_)Y rel_cc
+as.fctr(s)M -0.499                     
+as.fctr(_)Y -0.443  0.065              
+rel_occ     -0.033  0.010 -0.032       
+rel_suc     -0.051 -0.004  0.038 -0.455
+> ### Fit a GLMM similar to model5 but only using data up to 2021
+> #Compare the results with those of model 5 (if they are similar it would support the validity of model6 despite its smaller dataset)
+> model5.1 <- glmer(survival ~ as.factor(sex) + as.factor(age_cat) + rel_occ + rel_suc + (1|year) + (1|site) + (1|site_year), data = blue_tit_survival_weather, family = binomial)
+boundary (singular) fit: see help('isSingular')
+> summary(model5.1)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: survival ~ as.factor(sex) + as.factor(age_cat) + rel_occ + rel_suc +  
+    (1 | year) + (1 | site) + (1 | site_year)
+   Data: blue_tit_survival_weather
+
+     AIC      BIC   logLik deviance df.resid 
+  3062.8   3108.6  -1523.4   3046.8     2265 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.4288 -0.8448 -0.6961  1.0999  1.8658 
+
+Random effects:
+ Groups    Name        Variance  Std.Dev. 
+ site_year (Intercept) 9.300e-10 0.0000305
+ site      (Intercept) 8.107e-02 0.2847356
+ year      (Intercept) 7.390e-03 0.0859648
+Number of obs: 2273, groups:  site_year, 298; site, 42; year, 8
+
+Fixed effects:
+                    Estimate Std. Error z value Pr(>|z|)    
+(Intercept)         -0.37007    0.09367  -3.951 7.79e-05 ***
+as.factor(sex)M      0.20121    0.08681   2.318  0.02046 *  
+as.factor(age_cat)Y -0.19871    0.09016  -2.204  0.02752 *  
+rel_occ             -1.21593    0.38805  -3.133  0.00173 ** 
+rel_suc             -0.01014    0.04418  -0.230  0.81845    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) as.()M a.(_)Y rel_cc
+as.fctr(s)M -0.478                     
+as.fctr(_)Y -0.438  0.068              
+rel_occ     -0.045  0.014 -0.029       
+rel_suc     -0.073 -0.011  0.046 -0.453
+optimizer (Nelder_Mead) convergence code: 0 (OK)
+boundary (singular) fit: see help('isSingular')
+
+> # check the ranges of years to ensure the code has worked properly
+> range(blue_tit_survival_weather$year)
+[1] 2014 2021
+> ### Fit a GLMM similar to model5 but including weather metrics
+> model6 <- glmer(survival ~ as.factor(sex) + as.factor(age_cat) + rel_occ + rel_suc + mean_temp + monthly_wind + total_precip + (1|year) + (1|site) + (1|site_year), data = blue_tit_survival_weather, family = binomial)
+boundary (singular) fit: see help('isSingular')
+> summary(model6)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: survival ~ as.factor(sex) + as.factor(age_cat) + rel_occ + rel_suc +  
+    mean_temp + monthly_wind + total_precip + (1 | year) + (1 |      site) + (1 | site_year)
+   Data: blue_tit_survival_weather
+
+     AIC      BIC   logLik deviance df.resid 
+  3066.3   3129.3  -1522.1   3044.3     2262 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.3802 -0.8513 -0.6933  1.1014  1.9680 
+
+Random effects:
+ Groups    Name        Variance  Std.Dev. 
+ site_year (Intercept) 5.804e-10 2.409e-05
+ site      (Intercept) 7.246e-02 2.692e-01
+ year      (Intercept) 1.830e-03 4.278e-02
+Number of obs: 2273, groups:  site_year, 298; site, 42; year, 8
+
+Fixed effects:
+                      Estimate Std. Error z value Pr(>|z|)   
+(Intercept)         -0.4650023  0.2171247  -2.142  0.03222 * 
+as.factor(sex)M      0.2021485  0.0867752   2.330  0.01983 * 
+as.factor(age_cat)Y -0.1873988  0.0903791  -2.073  0.03813 * 
+rel_occ             -1.0802563  0.4031510  -2.680  0.00737 **
+rel_suc             -0.0264913  0.0459656  -0.576  0.56439   
+mean_temp           -0.0200006  0.0605514  -0.330  0.74117   
+monthly_wind         0.0624913  0.0518948   1.204  0.22852   
+total_precip        -0.0005742  0.0004151  -1.383  0.16655   
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) as.()M a.(_)Y rel_cc rel_sc mn_tmp mnthl_
+as.fctr(s)M -0.196                                          
+as.fctr(_)Y -0.159  0.069                                   
+rel_occ      0.045  0.018 -0.005                            
+rel_suc     -0.047 -0.015  0.013 -0.502                     
+mean_temp    0.312 -0.006  0.040 -0.171  0.182              
+monthly_wnd -0.760  0.000  0.023  0.111 -0.122 -0.570       
+total_precp -0.180 -0.017 -0.102 -0.292  0.231  0.284 -0.371
+optimizer (Nelder_Mead) convergence code: 0 (OK)
+boundary (singular) fit: see help('isSingular')

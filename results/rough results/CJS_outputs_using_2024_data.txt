@@ -1,0 +1,42 @@
+###Simple model
+
+# obtain the estimates on the data scale
+> CJS1$results$reals
+$Phi
+  occ  estimate
+1  10 0.4561376
+
+$p
+  occ  estimate
+1  11 0.7677571
+
+# Obtain precision estimates
+> predict(CJS1, newdata=data.frame(sex = c('F', 'M')), se=T)
+$Phi
+  occ  estimate         se       lcl      ucl
+1   1 0.4561376 0.01041991 0.4357995 0.476623
+
+$p
+  occ  estimate         se       lcl       ucl
+1   2 0.7677571 0.01818779 0.7302248 0.8014872
+
+###Time-site model comparison
+# Display a table comparing these models
+> blue_tit_CJS.time_site_models
+                              model npar      AIC   DeltaAIC       weight  neg2lnl convergence
+10               Phi(~time)p(~site)   51 4462.689  0.0000000 4.802957e-01 4360.689           0
+12        Phi(~time)p(~time + site)   60 4462.801  0.1126123 4.539994e-01 4342.801           0
+4            Phi(~1)p(~time + site)   51 4467.214  4.5256096 4.997871e-02 4365.214           0
+14        Phi(~time + site)p(~site)   91 4470.758  8.0689543 8.498799e-03 4288.758           0
+16 Phi(~time + site)p(~time + site)  100 4471.201  8.5125344 6.808248e-03 4271.201           0
+2                   Phi(~1)p(~site)   42 4477.737 15.0480788 2.593343e-04 4393.737           0
+8         Phi(~site)p(~time + site)   91 4478.917 16.2276863 1.437843e-04 4296.917           0
+7                Phi(~site)p(~time)   51 4485.038 22.3487550 6.738112e-06 4383.038           0
+13           Phi(~time + site)p(~1)   51 4485.997 23.3081476 4.170698e-06 4383.997           0
+6                Phi(~site)p(~site)   82 4486.981 24.2924103 2.549640e-06 4322.981           0
+15        Phi(~time + site)p(~time)   60 4487.179 24.4903532 2.309384e-06 4367.179           0
+3                   Phi(~1)p(~time)   11 4493.031 30.3418125 1.238420e-07 4471.031           0
+9                   Phi(~time)p(~1)   11 4494.064 31.3754219 7.386223e-08 4472.064           0
+11               Phi(~time)p(~time)   20 4495.242 32.5532579 4.098817e-08 4455.242           0
+5                   Phi(~site)p(~1)   42 4499.359 36.6699065 5.232867e-09 4415.359           0
+1                      Phi(~1)p(~1)    2 4506.383 43.6937759 1.561442e-10 4502.383           0
